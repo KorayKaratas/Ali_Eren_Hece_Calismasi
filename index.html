@@ -1,224 +1,239 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hece Çalışması — A E İ U O | T L N R K</title>
-  <style>
-    :root{
-      --bg:#0f172a;          /* koyu arka plan */
-      --fg:#e2e8f0;          /* yazı rengi */
-      --muted:#94a3b8;       /* ikincil */
-      --accent:#22c55e;      /* sayaç barı */
-      --card:#111827;        /* kart */
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--fg);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-                   "Noto Sans", "Liberation Sans", Arial, "Apple Color Emoji",
-                   "Segoe UI Emoji", "Segoe UI Symbol";
-      display:flex; align-items:center; justify-content:center;
-    }
-    .wrap{
-      width:min(900px, 95vw);
-      display:grid; gap:18px; text-align:center;
-    }
-    .title{font-size:clamp(18px,2.6vw,22px); color:var(--muted); letter-spacing:.4px}
-    .card{
-      background:var(--card);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:20px; padding:28px 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      cursor:pointer; user-select:none;
-    }
-    .syllable{
-      font-weight:800; line-height:1;
-      font-size:min(22vw, 180px);
-      letter-spacing:.03em;
-    }
-    .hint{
-      margin-top:10px; font-size:clamp(12px,2.2vw,14px);
-      color:var(--muted)
-    }
-    .bar{
-      height:10px; width:100%;
-      background:rgba(255,255,255,.08);
-      border-radius:999px; overflow:hidden;
-      outline:1px solid rgba(255,255,255,.06);
-    }
-    .fill{
-      height:100%; width:0%;
-      background:var(--accent);
-      transition:width .2s linear;
-    }
-    .row{display:flex; align-items:center; justify-content:space-between; gap:10px}
-    .stat{
-      font-size:clamp(12px,2.2vw,14px); color:var(--muted)
-    }
-    .pill{
-      display:inline-block; padding:6px 10px; border-radius:999px;
-      background:rgba(255,255,255,.06); color:var(--fg);
-      font-weight:600; font-size:12px; letter-spacing:.3px
-    }
-    .kbd{
-      border:1px solid rgba(255,255,255,.18);
-      background:#0b1220; border-radius:6px; padding:2px 6px; font-size:12px
-    }
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Müfredata Uygun Hece Çalışması (A-E-İ-U-O | T-L-N-R-K | +M)</title>
+<style>
+  :root{--bg:#0b1220;--fg:#e6eef7;--muted:#9fb0c6;--card:#101828;--accent:#22c55e}
+  *{box-sizing:border-box} html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;display:flex;align-items:center;justify-content:center;padding:14px}
+  .wrap{width:min(1100px,96vw);display:grid;gap:14px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .box{background:#0a1222;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 12px}
+  .title{font-weight:700;color:var(--muted);font-size:13px;margin-bottom:6px;letter-spacing:.3px}
+  select,input[type="number"]{background:#0a1020;color:var(--fg);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:8px 10px;font-size:14px}
+  label{font-size:13px;color:var(--fg);display:flex;gap:6px;align-items:center}
+  .pill{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:6px 10px;font-size:12px}
+  .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:22px;cursor:pointer}
+  .syll{font-weight:900;line-height:1;text-align:center;font-size:min(22vw,170px);letter-spacing:.02em;user-select:none}
+  .hint{margin-top:8px;text-align:center;color:var(--muted);font-size:13px}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .bar{height:10px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;outline:1px solid rgba(255,255,255,.06)}
+  .fill{height:100%;width:0;background:var(--accent);transition:width .2s linear}
+  .kbd{border:1px solid rgba(255,255,255,.2);background:#0b1220;border-radius:6px;padding:2px 6px;font-size:12px}
+  .stat{color:var(--muted);font-size:13px}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="title">Hece Çalışması • Sesliler: A E İ U O • Sessizler: T L N R K</div>
+<div class="wrap">
 
-    <div id="card" class="card" aria-label="Hece kartı — tıklayınca değişir">
-      <div id="syllable" class="syllable">Hazır</div>
-      <div class="hint">Tıkla / dokun ya da <span class="kbd">Space</span> → sonraki hece (otomatik 5 sn)</div>
+  <div class="controls">
+    <div class="box">
+      <div class="title">Harf Seti</div>
+      <select id="setSelect">
+        <option value="base" selected>A-E-İ-U-O + T-L-N-R-K (bugün)</option>
+        <option value="withM">A-E-İ-U-O + T-L-N-R-K + M (haftaya M)</option>
+      </select>
     </div>
 
-    <div class="row">
-      <div class="stat">
-        <span class="pill" id="modeLabel">CV • VC • CVC • VCV</span>
-        &nbsp;|&nbsp; Toplam hece: <b id="totalCount">–</b>
-      </div>
-      <div class="stat">
-        Sıradaki değişime kalan: <b id="countdown">5.0</b> sn
-      </div>
+    <div class="box">
+      <div class="title">Ünite/Bölüm</div>
+      <select id="unitSelect">
+        <option value="ALL" selected>Hepsi (karışık)</option>
+        <option value="EL">EL (el/le/ele…)</option>
+        <option value="AL">AL (al/la/ala…)</option>
+        <option value="K">K (ke/ek/kel/lek…)</option>
+        <option value="I">İ (il/li/ik/ki…)</option>
+        <option value="N">N (ne/en/na/an/ni/in…)</option>
+        <option value="O">O (ok/ko/ol/lo/on/no…)</option>
+        <option value="U">U (ul/lu/un/nu/uk/ku/um/mu*)</option>
+        <option value="T">T (ta/at/te/et/ti/it/to/ot/tu/ut…)</option>
+        <option value="R">R (ra/ar/re/er/ri/ir/ro/or/ru/ur…)</option>
+        <option value="M">M (ma/am/me/em/mi/im/mo/om/mu/um)</option>
+      </select>
     </div>
 
-    <div class="bar" aria-hidden="true"><div id="fill" class="fill"></div></div>
+    <div class="box">
+      <div class="title">Sayaç (sn)</div>
+      <input id="sec" type="number" min="2" max="60" value="15" style="width:90px"/>
+    </div>
+
+    <div class="box">
+      <div class="title">Kurallar</div>
+      <label><input type="checkbox" id="onlyBook" checked/> Yalnız “kitaptaki” heceler (beyaz liste)</label>
+      <label><input type="checkbox" id="noGStart" checked/> Başta “ğ” çıkarma (zaten listede yok)</label>
+    </div>
+
+    <div class="pill" id="countView">Havuz: – hece</div>
   </div>
 
-  <script>
-    // === Parametreler ===
-    const INTERVAL_SEC = 10; // otomatik geçiş süresi (saniye)
-    const VOWELS = ['a','e','i','u','o'];           // A E İ U O (küçük; ekranda ilk harf büyük gösterilir)
-    const CONSONANTS = ['t','l','n','r','k'];       // T L N R K
-    const PATTERNS = ['CV','VC','CVC','VCV'];       // hangi kalıplar üretilecek
+  <div id="card" class="card" aria-label="Hece kartı — tıkla/Space ile değiştir">
+    <div id="syll" class="syll">Hazır</div>
+    <div class="hint">Tıkla / dokun veya <span class="kbd">Space</span> • <span class="kbd">→</span> • <span class="kbd">Enter</span> — anında yeni hece (otomatik süre dolar)</div>
+  </div>
 
-    // === Yardımcılar ===
-    const trUCFirst = (s) => {
-      if (!s) return s;
-      return s.charAt(0).toLocaleUpperCase('tr-TR') + s.slice(1);
-    };
+  <div class="row">
+    <div class="stat">Kalan: <b id="left">10.0</b> sn</div>
+    <div class="stat">Kaynak: 1. Sınıf Hece Kitabım (bölümlere göre derlenmiştir)</div>
+  </div>
+  <div class="bar"><div id="fill" class="fill"></div></div>
+</div>
 
-    // Basit üretim: kalıba göre hece oluştur
-    function makeByPattern(p){
-      const r = (arr) => arr[Math.floor(Math.random()*arr.length)];
-      switch(p){
-        case 'CV':  return r(CONSONANTS) + r(VOWELS);
-        case 'VC':  return r(VOWELS) + r(CONSONANTS);
-        case 'CVC': return r(CONSONANTS) + r(VOWELS) + r(CONSONANTS);
-        case 'VCV': return r(VOWELS) + r(CONSONANTS) + r(VOWELS);
-        default:    return r(CONSONANTS) + r(VOWELS);
-      }
-    }
+<script>
+/* 
+  BEYAZ LİSTE (yalnız kitapta geçen heceler – ilgili sayfa/bölümlerden derlenmiş alt kümeler)
+  Not: Bu liste bugünkü harf kapsamına (A-E-İ-U-O + T-L-N-R-K) ve “haftaya M” genişlemesine göre hazırlanmıştır.
+  İhtiyaç olursa aynı yapıya başka sayfa hecelerini de ekleyebilirsin.
+*/
 
-    // Tüm kombinasyonları (tekrarsız) üret, sonra karıştır
-    function buildAll(){
-      const set = new Set();
+// EL bölümü (el/le/ele/elle/…)
+const SET_EL = [
+  "el","le","ele","elle","lel"
+];
 
-      // CV
-      if (PATTERNS.includes('CV')){
-        for (const c of CONSONANTS) for (const v of VOWELS) set.add(c+v);
-      }
-      // VC
-      if (PATTERNS.includes('VC')){
-        for (const v of VOWELS) for (const c of CONSONANTS) set.add(v+c);
-      }
-      // CVC
-      if (PATTERNS.includes('CVC')){
-        for (const c1 of CONSONANTS) for (const v of VOWELS) for (const c2 of CONSONANTS) {
-          set.add(c1+v+c2);
-        }
-      }
-      // VCV
-      if (PATTERNS.includes('VCV')){
-        for (const v1 of VOWELS) for (const c of CONSONANTS) for (const v2 of VOWELS) {
-          set.add(v1+c+v2);
-        }
-      }
+// AL bölümü (al/la/ala/…)
+const SET_AL = [
+  "al","la","ala"
+];
 
-      const arr = [...set];
-      // Küçük bir filtre: çok zor/uygunsuz kombinasyonları istersen burada ele
-      // (Şimdilik hepsini bırakıyoruz)
-      // Karıştır (Fisher–Yates)
-      for (let i=arr.length-1; i>0; i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
+// K bölümü (ke/ek/kel/lek/kal/lak/elek/kelek… → hece odaklı kısa parçalar)
+const SET_K = [
+  "ke","ek","kel","lek","kal","lak"
+];
 
-    const ALL = buildAll();          // hazır liste
-    let idx = -1;                    // mevcut index
-    let elapsed = 0;                 // geçen süre (sn)
-    let timerId = null;
+// İ bölümü (il/li/ik/ki…)
+const SET_I = [
+  "il","li","ik","ki"
+];
 
-    // === DOM ===
-    const $syllable = document.getElementById('syllable');
-    const $total = document.getElementById('totalCount');
-    const $countdown = document.getElementById('countdown');
-    const $fill = document.getElementById('fill');
-    const $card = document.getElementById('card');
+// N bölümü (ne/en/na/an/ni/in, ayrıca bazı iki heceli parçalananlardan tek heceler)
+const SET_N = [
+  "ne","en","na","an","ni","in"
+];
 
-    $total.textContent = ALL.length.toLocaleString('tr-TR');
+// O bölümü (ok/ko/ol/lo/on/no…)
+const SET_O = [
+  "ok","ko","ol","lo","on","no"
+];
 
-    function showNext(randomFallback=false){
-      // Sıradaki index
-      if (idx < ALL.length-1){
-        idx++;
-      } else {
-        // sona geldiysek yeniden karıştırıp başa dön
-        for (let i=ALL.length-1;i>0;i--){
-          const j=Math.floor(Math.random()*(i+1));
-          [ALL[i],ALL[j]]=[ALL[j],ALL[i]];
-        }
-        idx = 0;
-      }
-      const raw = ALL[idx] || makeByPattern('CV');
-      $syllable.textContent = trUCFirst(raw);
-      resetTimer();
-    }
+// U bölümü (ul/lu/un/nu/uk/ku/um/mu* — mu/um yalnız M açıkken dahil)
+const SET_U_BASE = [
+  "ul","lu","un","nu","uk","ku"
+];
+const SET_U_WITH_M = [
+  ...SET_U_BASE,"um","mu"
+];
 
-    function resetTimer(){
-      elapsed = 0;
-      renderCountdown();
-    }
+// T bölümü (temel çiftler)
+const SET_T = [
+  "ta","at","te","et","ti","it","to","ot","tu","ut"
+];
 
-    function renderCountdown(){
-      const remaining = Math.max(0, INTERVAL_SEC - elapsed);
-      $countdown.textContent = remaining.toFixed(1);
-      const pct = Math.min(100, Math.max(0, (elapsed / INTERVAL_SEC) * 100));
-      $fill.style.width = pct + '%';
-    }
+// R bölümü (ra/ar/re/er/ri/ir/ro/or/ru/ur)
+const SET_R = [
+  "ra","ar","re","er","ri","ir","ro","or","ru","ur"
+];
 
-    function tick(){
-      elapsed += 0.1;
-      if (elapsed >= INTERVAL_SEC){
-        showNext();
-      } else {
-        renderCountdown();
-      }
-    }
+// M bölümü (haftaya)
+const SET_M = [
+  "ma","am","me","em","mi","im","mo","om","mu","um"
+];
 
-    function startLoop(){
-      if (timerId) clearInterval(timerId);
-      timerId = setInterval(tick, 100);
-    }
+// Güncel kapsam: bugünkü (M kapalı) ve haftaya (M açık)
+function getAllSets(withM){
+  return {
+    EL: SET_EL,
+    AL: SET_AL,
+    K:  SET_K,
+    I:  SET_I,
+    N:  SET_N,
+    O:  SET_O,
+    U:  withM ? SET_U_WITH_M : SET_U_BASE,
+    T:  SET_T,
+    R:  SET_R,
+    M:  withM ? SET_M : [] // bugünde kapalı
+  };
+}
 
-    // Etkileşimler
-    $card.addEventListener('click', () => showNext());
-    document.addEventListener('keydown', (e)=>{
-      if (e.code === 'Space'){ e.preventDefault(); showNext(); }
-      if (e.key === 'ArrowRight'){ showNext(); }
-    });
+// --- Yardımcılar ---
+function trUCFirst(s){ return s ? s.charAt(0).toLocaleUpperCase('tr-TR') + s.slice(1) : s; }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } return a }
 
-    // İlk gösterim
-    showNext(true);
-    startLoop();
-  </script>
+// --- DOM ---
+const $set = document.getElementById('setSelect');
+const $unit = document.getElementById('unitSelect');
+const $sec = document.getElementById('sec');
+const $onlyBook = document.getElementById('onlyBook');
+const $noGStart = document.getElementById('noGStart');
+const $syll = document.getElementById('syll');
+const $card = document.getElementById('card');
+const $fill = document.getElementById('fill');
+const $left = document.getElementById('left');
+const $countView = document.getElementById('countView');
+
+let POOL=[], idx=-1, elapsed=0, timer=null;
+
+function buildPool(){
+  const withM = ($set.value === 'withM');
+  const data = getAllSets(withM);
+  let pool = [];
+
+  const chosen = $unit.value;
+  if(chosen === 'ALL'){
+    pool = [
+      ...data.EL, ...data.AL, ...data.K, ...data.I, ...data.N,
+      ...data.O,  ...data.U,  ...data.T, ...data.R, ...data.M
+    ];
+  } else {
+    pool = (data[chosen] || []);
+  }
+
+  // Temizlik: başta ğ olmasın seçeneği (zaten listede yok ama güvence)
+  if($noGStart.checked) pool = pool.filter(s => !s.startsWith("ğ"));
+
+  // Sadece kitap heceleri: true ise olduğu gibi; false ise (gerekirse) genişletme yapılabilirdi.
+  // (Biz beyaz listede kalıyoruz.)
+  POOL = shuffle([...new Set(pool)]);
+  idx = -1;
+  $countView.textContent = "Havuz: " + POOL.length.toLocaleString('tr-TR') + " hece";
+}
+
+function nextSyll(){
+  if(!POOL.length){ $syll.textContent="—"; return; }
+  idx = (idx + 1) % POOL.length;
+  $syll.textContent = trUCFirst(POOL[idx]);
+  resetTimer();
+}
+
+function resetTimer(){ elapsed = 0; renderProgress(); }
+function renderProgress(){
+  const sec = Math.max(2, Math.min(60, Number($sec.value)||10));
+  const remain = Math.max(0, sec - elapsed);
+  $left.textContent = remain.toFixed(1);
+  const pct = Math.min(100, Math.max(0, (elapsed/sec)*100));
+  $fill.style.width = pct + '%';
+}
+function loop(){
+  const sec = Math.max(2, Math.min(60, Number($sec.value)||10));
+  elapsed += 0.1;
+  if(elapsed >= sec) nextSyll(); else renderProgress();
+}
+function start(){ if(timer) clearInterval(timer); timer = setInterval(loop, 100); }
+
+// Etkileşimler
+$card.addEventListener('click', nextSyll);
+document.addEventListener('keydown', (e)=>{
+  if(e.code==='Space'||e.key==='Enter'||e.key==='ArrowRight'){ e.preventDefault(); nextSyll(); }
+});
+$set.addEventListener('change', ()=>{ buildPool(); nextSyll(); });
+$unit.addEventListener('change', ()=>{ buildPool(); nextSyll(); });
+$onlyBook.addEventListener('change', ()=>{ buildPool(); nextSyll(); });
+$noGStart.addEventListener('change', ()=>{ buildPool(); nextSyll(); });
+$sec.addEventListener('change', resetTimer);
+
+// İlk yükleme
+buildPool(); nextSyll(); start();
+</script>
 </body>
 </html>
-
